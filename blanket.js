@@ -1,4 +1,4 @@
 require('blanket')({
-	"pattern": "app.js",
+	"pattern": "lib",
     "data-cover-never": "[node_modules, /test]"
 });

@@ -27,7 +27,7 @@ module.exports = function(grunt) {
           node: true
       },
       files: {
-        src: ['Gruntfile.js', 'app.js/**/*.js']
+        src: ['Gruntfile.js', 'lib/**/*.js']
       }
     },
     mochaTest: {
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
         options: {
           reporter: 'travis-cov'
         },
-        src: ['test/app.js/**/*.js']
+        src: ['test/lib/**/*.js']
       }
     }
   });
