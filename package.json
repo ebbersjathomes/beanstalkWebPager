@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "config": "~1.2.2",
-    "bristol": "~0.3.2"
+    "bristol": "~0.3.2",
+    "bluebird": "~2.3.5",
+    "joi": "~4.7.0"
   }
 }
