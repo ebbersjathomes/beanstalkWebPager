@@ -45,7 +45,7 @@ module.exports = function(grunt) {
           quiet: true,
           captureFile: 'coverage.html'
         },
-        src: ['test/app.js/**/*.js']
+        src: ['test/lib/**/*.js']
       },
       'travis-cov': {
         options: {
