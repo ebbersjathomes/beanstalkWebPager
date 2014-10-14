@@ -1,4 +1,6 @@
 {
-	"foo"		: "bar",
-	"test"	: true
+	"testRoute1" : {
+		"foo"	: "bar",
+		"test"	: true
+	}
 }
