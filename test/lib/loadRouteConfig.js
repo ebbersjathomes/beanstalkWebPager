@@ -1,4 +1,5 @@
-var joi		= require("joi"),
+var _		= require("lodash"),
+	joi		= require("joi"),
 	should 	= require("should"),
 	sinon	= require("sinon");
 
@@ -170,5 +171,61 @@ describe("loadRouteConfig loads the routes JSON object", function(){
 				done();
 			})
 			.catch(done);
+	}),
+	it("schema should error when missing required fields", function(){
+		var loadRouteConfig = require("../../lib/loadRouteConfig"),
+			instance		= new loadRouteConfig(),
+			testData		= {
+				destationUrl 	: "http://some.random.url",
+				routeName		: "MyTestRoute",
+				tubeName		: "TestTube"
+			};
+
+		var noDestinationUrl 	= _.cloneDeep(testData),
+			noRouteName			= _.cloneDeep(testData),
+			noTubeName			= _.cloneDeep(testData);
+
+		delete noDestinationUrl.destationUrl;
+		delete noRouteName.routeName;
+		delete noTubeName.tubeName;
+
+		var noDestinationUrlResult = joi.validate(noDestinationUrl, instance.schema),
+			noRouteNameResult		= joi.validate(noRouteName, instance.schema),
+			noTubeNameResult		= joi.validate(noTubeName, instance.schema);
+
+		noDestinationUrlResult.should.have.property("error").instanceOf(Error);
+		noRouteNameResult.should.have.property("error").instanceOf(Error);
+		noTubeNameResult.should.have.property("error").instanceOf(Error);
+	}),
+	it("schema should not error when required fields are passed", function(){
+		var loadRouteConfig = require("../../lib/loadRouteConfig"),
+			instance		= new loadRouteConfig(),
+			testData		= {
+				destationUrl 	: "http://some.random.url",
+				routeName		: "MyTestRoute",
+				tubeName		: "TestTube"
+			};
+
+		var result = joi.validate(testData, instance.schema);
+
+		result.should.have.property("error").equal(null);
+	}),
+	it("should set defaults", function(){
+		var loadRouteConfig = require("../../lib/loadRouteConfig"),
+			instance		= new loadRouteConfig(),
+			testData		= {
+				destationUrl 	: "http://some.random.url",
+				routeName		: "MyTestRoute",
+				tubeName		: "TestTube"
+			};
+
+		var result = joi.validate(testData, instance.schema);
+
+		result.should.have.property("error").equal(null);
+		result.value.should.have.property("maxRunTime").equal(30);
+		result.value.should.have.property("numClients").equal(1);
+		result.value.should.have.property("purgeBuriedAfter").equal(86400);
+		result.value.should.have.property("retryAttempts").equal(10);
+		result.value.should.have.property("retryDelay").equal(60);
 	})
 });
